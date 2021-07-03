@@ -1,7 +1,5 @@
 {
     "name": "xia_sava/covid19-yamabiko",
-    "require-dev": {
-    },
     "authors": [
         {
             "name": "ISIGE, Akira",
