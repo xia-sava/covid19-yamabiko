@@ -1,7 +1,6 @@
 {
     "name": "xia_sava/covid19-yamabiko",
     "require-dev": {
-        "roave/security-advisories": "dev-latest"
     },
     "authors": [
         {
