@@ -1,7 +1,7 @@
 {
     "name": "xia_sava/covid19-yamabiko",
     "require-dev": {
-        "guzzlehttp/guzzle": "^7.3"
+        "roave/security-advisories": "dev-latest",
     },
     "authors": [
         {
@@ -9,7 +9,9 @@
             "email": "xia@silvia.com"
         }
     ],
-    "require": {},
+    "require": {
+        "guzzlehttp/guzzle": "^7.3"
+    },
     "config": {
         "platform": {
             "php": "8.0"
