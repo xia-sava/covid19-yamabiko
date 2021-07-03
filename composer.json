@@ -1,0 +1,13 @@
+{
+    "name": "xia_sava/covid19-yamabiko",
+    "require-dev": {
+        "guzzlehttp/guzzle": "^7.3"
+    },
+    "authors": [
+        {
+            "name": "ISIGE, Akira",
+            "email": "xia@silvia.com"
+        }
+    ],
+    "require": {}
+}
