@@ -8,6 +8,10 @@
     ],
     "require": {
         "guzzlehttp/guzzle": "^7.3"
+    }
+    ,
+    "require-dev": {
+        "roave/security-advisories": "dev-latest"
     },
     "config": {
         "platform": {
