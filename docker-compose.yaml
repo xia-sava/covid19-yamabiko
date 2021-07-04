@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  yamabiko:
+    build:
+      context: ./
+    environment:
+      TZ: Asia/Tokyo
+    volumes:
+      - .:/project
