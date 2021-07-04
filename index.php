@@ -58,6 +58,7 @@ class Main
         $availables = [];
         foreach (self::LOCATIONS as $location => [$mm_id, $mms_id]) {
             $next_date = '';
+            // 7月いっぱいの予約を探す感じでループ
             while ($next_date < strtotime('2021-08-01')) {
                 $res = $this->client->request('POST', 'https://yamabikovaccine.reserve.ne.jp/mobile2/reserve.php', [
                     'upper_mm_id' => $mm_id,
@@ -98,7 +99,6 @@ class Main
                 sleep(1);
             }
         }
-        $availables[] = ['dummy', '2021-07-10', '00:00', '30'];
 
         if (count($availables)) {
             $body = "やまびこグループのワクチン予約に空きがありますよ！\n\n";
@@ -111,7 +111,6 @@ class Main
                 $mail = new PHPMailer(exceptions: true);
                 $mail->CharSet = PHPMailer::CHARSET_UTF8;
 
-                // SMTPサーバの設定
                 $mail->isSMTP();
                 $mail->Host       = $_ENV['MAIL_SERVER'];
                 $mail->SMTPAuth   = true;
@@ -120,18 +119,14 @@ class Main
                 $mail->SMTPSecure = 'tls';
                 $mail->Port       = 587;
 
-                // 送受信先設定（第二引数は省略可）
                 $mail->setFrom('xia@silvia.com', 'ワクチン予約チェッカー for やまびこグループ');
                 foreach (explode(',', $_ENV['MAILTO']) as $mailto) {
                     $mail->addAddress($mailto);
                 }
                 $mail->Sender = 'xia@silvia.com';
-
-                // 送信内容設定
                 $mail->Subject = 'やまびこグループのワクチン予約に空きがありますよ！';
                 $mail->Body    = $body;
 
-                // 送信
                 $mail->send();
 
                 print($body);
@@ -139,7 +134,7 @@ class Main
                 echo 'Caught exception: '. $e->getMessage() ."\n";
             }
         } else {
-            print("空きはなかったよ……");
+            print("空きはなかったよ……\n");
         }
     }
 }
