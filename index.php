@@ -98,6 +98,7 @@ class Main
                 sleep(1);
             }
         }
+        $availables[] = ['dummy', '2021-07-10', '00:00', '30'];
 
         if (count($availables)) {
             $body = "やまびこグループのワクチン予約に空きがありますよ！\n\n";
