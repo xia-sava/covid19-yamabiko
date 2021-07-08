@@ -83,6 +83,7 @@ class Main
                     'res_unix_datetime' => '',
                 ]);
                 assert($res !== null);
+                print($res->text());die;
                 $json = json_decode($res->text(), associative: true);
                 foreach ($json['operation']['calendar']['ar_empty_reserve'] as $date => $times) {
                     foreach ($times as $time => $slot) {
@@ -96,7 +97,7 @@ class Main
                     $next_date = strtotime('today 0:00');
                 }
                 $next_date += (7 * 24 * 60 * 60);
-                sleep(1);
+//                sleep(1);
             }
         }
 
