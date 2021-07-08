@@ -57,11 +57,9 @@ class Main
 
         $availables = [];
         foreach (self::LOCATIONS as $location => [$mm_id, $mms_id]) {
-            print_r([$location, $mm_id, $mms_id]);
             $next_date = '';
             // 7月いっぱいの予約を探す感じでループ
             while ($next_date < strtotime('2021-08-01')) {
-                print_r([$next_date]);
                 $res = $this->client->request('POST', 'https://yamabikovaccine.reserve.ne.jp/mobile2/reserve.php', [
                     'upper_mm_id' => $mm_id,
                     'mms_id' => $mms_id,
@@ -85,7 +83,6 @@ class Main
                     'res_unix_datetime' => '',
                 ]);
                 assert($res !== null);
-                print($res->text());die;
                 $json = json_decode($res->text(), associative: true);
                 foreach ($json['operation']['calendar']['ar_empty_reserve'] as $date => $times) {
                     foreach ($times as $time => $slot) {
@@ -99,7 +96,7 @@ class Main
                     $next_date = strtotime('today 0:00');
                 }
                 $next_date += (7 * 24 * 60 * 60);
-//                sleep(1);
+                sleep(1);
             }
         }
 
