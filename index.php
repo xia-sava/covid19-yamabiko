@@ -1,6 +1,9 @@
 <?php
 
 use Goutte\Client;
+use LINE\LINEBot;
+use LINE\LINEBot\HTTPClient\CurlHTTPClient;
+use LINE\LINEBot\MessageBuilder\TextMessageBuilder;
 use PHPMailer\PHPMailer\PHPMailer;
 
 require 'vendor/autoload.php';
@@ -101,6 +104,9 @@ class Main
             }
         }
 
+        if ($_ENV['TEST']) {
+            $availables[] = ['test-location', date('Y-m-d'), date('H:i'), 100];
+        }
         if (count($availables)) {
             $body = "やまびこグループのワクチン予約に空きがありますよ！\n\n";
 
@@ -150,6 +156,12 @@ class Main
                     'text' => $body,
                 ], JSON_THROW_ON_ERROR);
                 $this->client->request('POST', $slack, content: $json);
+                break;
+            case 'line':
+                $httpClient = new CurlHTTPClient($_ENV['LINE_ACCESS_TOKEN']);
+                $bot = new LINEBot($httpClient, ['channelSecret' => $_ENV['LINE_CHANNEL_SECRET']]);
+                $message = new TextMessageBuilder($body);
+                $bot->broadcast($message);
                 break;
         }
     }
