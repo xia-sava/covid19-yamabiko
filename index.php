@@ -57,11 +57,10 @@ class Main
 
         $availables = [];
         foreach (self::LOCATIONS as $location => [$mm_id, $mms_id]) {
-            print_r([$location, $mm_id, $mms_id]);
             $next_date = '';
-            // 7月いっぱいの予約を探す感じでループ
-            while ($next_date < strtotime('2021-08-01')) {
-                print_r([$next_date]);
+            // 期限までの予約を探す感じでループ
+            $limit_date = $_ENV['LIMIT_DATE'];
+            while ($next_date < strtotime($limit_date)) {
                 $res = $this->client->request('POST', 'https://yamabikovaccine.reserve.ne.jp/mobile2/reserve.php', [
                     'upper_mm_id' => $mm_id,
                     'mms_id' => $mms_id,
@@ -85,7 +84,6 @@ class Main
                     'res_unix_datetime' => '',
                 ]);
                 assert($res !== null);
-                print($res->text());die;
                 $json = json_decode($res->text(), associative: true);
                 foreach ($json['operation']['calendar']['ar_empty_reserve'] as $date => $times) {
                     foreach ($times as $time => $slot) {
@@ -99,7 +97,7 @@ class Main
                     $next_date = strtotime('today 0:00');
                 }
                 $next_date += (7 * 24 * 60 * 60);
-//                sleep(1);
+                sleep(1);
             }
         }
 
@@ -111,6 +109,20 @@ class Main
             }
             $body .= "\n\nサイトへゴー！ -> https://yamabikovaccine.reserve.ne.jp/sp/index.php\n\n";
             try {
+                $this->notify($body);
+                print($body);
+            } catch (Exception $e) {
+                echo 'Caught exception: '. $e->getMessage() ."\n";
+            }
+        } else {
+             print("空きはなかったよ……\n");
+//            $this->notify("空きはなかったよ……\n");
+        }
+    }
+
+    public function notify(string $body): void {
+        switch ($_ENV['NOTIFY']) {
+            case 'mail':
                 $mail = new PHPMailer(exceptions: true);
                 $mail->CharSet = PHPMailer::CHARSET_UTF8;
 
@@ -131,13 +143,14 @@ class Main
                 $mail->Body    = $body;
 
                 $mail->send();
-
-                print($body);
-            } catch (Exception $e) {
-                echo 'Caught exception: '. $e->getMessage() ."\n";
-            }
-        } else {
-            print("空きはなかったよ……\n");
+                break;
+            case 'slack':
+                $slack = $_ENV['SLACK_WEBHOOK_URL'];
+                $json = json_encode([
+                    'text' => $body,
+                ], JSON_THROW_ON_ERROR);
+                $this->client->request('POST', $slack, content: $json);
+                break;
         }
     }
 }
