@@ -41,10 +41,15 @@ class Main
             $availables[] = date('Y-m-d H:i');
         }
         if (count($availables)) {
-            $body = "新横浜整形外科リウマチ科のワクチン予約に空きがありますよ！\n\n";
+            $availables_str = implode(" / ", $availables);
+            $body = <<<END
+新横浜整形外科リウマチ科のワクチン予約に空きがありますよ！
 
-            $body .= implode(" / ", $availables);
-            $body .= "\n\nサイトへゴー！ -> https://stores-reserve.com/yamabiko/services\n\n";
+{$availables_str}
+
+予約ページ -> https://stores-reserve.com/yamabiko/booking_pages
+カレンダー -> https://stores-reserve.com/yamabiko/services
+END;
             try {
                 $this->notify($body);
                 print($body);
