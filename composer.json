@@ -11,7 +11,8 @@
         "fabpot/goutte": "^4.0",
         "phpmailer/phpmailer": "^6.5",
         "linecorp/line-bot-sdk": "^7.1",
-        "abraham/twitteroauth": "^3.1"
+        "abraham/twitteroauth": "^3.1",
+        "ext-mbstring": "*"
     }
     ,
     "require-dev": {

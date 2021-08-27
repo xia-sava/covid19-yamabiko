@@ -110,7 +110,8 @@ END;
                         $_ENV['TWITTER_ACCESS_TOKEN'],
                         $_ENV['TWITTER_ACCESS_TOKEN_SECRET'],
                     );
-                    $r = $twitter->post('statuses/update', ['status' => $body]);
+                    $shorten = mb_strimwidth($body, 0, 280, '...');
+                    $twitter->post('statuses/update', ['status' => $shorten]);
             }
         }
     }
