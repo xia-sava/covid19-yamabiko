@@ -1,5 +1,6 @@
 <?php
 
+use Abraham\TwitterOAuth\TwitterOAuth;
 use Goutte\Client;
 use LINE\LINEBot;
 use LINE\LINEBot\HTTPClient\CurlHTTPClient;
@@ -44,11 +45,10 @@ class Main
             $availables_str = implode(" / ", $availables);
             $body = <<<END
 新横浜整形外科リウマチ科のワクチン予約に空きがありますよ！
-
-{$availables_str}
-
 予約ページ -> https://stores-reserve.com/yamabiko/booking_pages
 カレンダー -> https://stores-reserve.com/yamabiko/services
+
+{$availables_str}
 END;
             try {
                 $this->notify($body);
@@ -102,6 +102,14 @@ END;
                 $message = new TextMessageBuilder($body);
                 $bot->broadcast($message);
                 break;
+            case 'twitter':
+                $twitter = new TwitterOAuth(
+                    $_ENV['TWITTER_API_KEY'],
+                    $_ENV['TWITTER_API_SECRET_KEY'],
+                    $_ENV['TWITTER_ACCESS_TOKEN'],
+                    $_ENV['TWITTER_ACCESS_TOKEN_SECRET'],
+                );
+                $r = $twitter->post('statuses/update', ['status' => $body]);
         }
     }
 }
