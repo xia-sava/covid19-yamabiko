@@ -89,8 +89,10 @@ END;
                 break;
             case 'slack':
                 $slack = $_ENV['SLACK_WEBHOOK_URL'];
+                $channel = $_ENV['SLACK_NOTIFY_CHANNEL'] ?: 'covid-yamabiko';
                 $json = json_encode([
                     'text' => $body,
+                    'channel' => $channel,
                 ], JSON_THROW_ON_ERROR);
                 $this->client->request('POST', $slack, content: $json);
                 break;
