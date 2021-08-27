@@ -91,7 +91,7 @@ END;
                     break;
                 case 'slack':
                     $slack = $_ENV['SLACK_WEBHOOK_URL'];
-                    $channel = $_ENV['SLACK_NOTIFY_CHANNEL'] ?: 'covid-yamabiko';
+                    $channel = $_ENV['SLACK_NOTIFY_CHANNEL'] ?? 'covid-yamabiko';
                     $json = json_encode([
                         'text' => $body,
                         'channel' => $channel,
