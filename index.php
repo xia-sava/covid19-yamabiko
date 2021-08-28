@@ -43,9 +43,10 @@ class Main
             $availables[] = date('Y-m-d H:i');
         }
         if (count($availables)) {
+            $now = date('H:i');
             $availables_str = implode(" / ", $availables);
             $body = <<<END
-新横浜整形外科リウマチ科のワクチン予約に空きがありますよ！
+({$now}) 新横浜整形外科リウマチ科のワクチン予約に空きがありますよ！
 予約ページ -> https://stores-reserve.com/yamabiko/booking_pages
 カレンダー -> https://stores-reserve.com/yamabiko/services
 
@@ -111,7 +112,7 @@ END;
                         $_ENV['TWITTER_ACCESS_TOKEN'],
                         $_ENV['TWITTER_ACCESS_TOKEN_SECRET'],
                     );
-                    $shorten = mb_strimwidth($body, 0, 280, '...');
+                    $shorten = mb_strimwidth($body, 0, 320, '...');
                     $twitter->post('statuses/update', ['status' => $shorten]);
             }
         }
