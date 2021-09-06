@@ -39,7 +39,9 @@ class Main
         $res = json_decode($response, associative: true);
         $availables = [];
         foreach ($res as $entry) {
-            $availables[] = $entry['start'];
+            if (str_contains($entry['title'], '一般')) {
+                $availables[] = $entry['start'];
+            }
         }
 
         if ($_ENV['TEST'] ?? '') {
